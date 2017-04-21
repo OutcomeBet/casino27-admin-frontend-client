@@ -151,6 +151,6 @@
   if ((typeof module !== "undefined" && module !== null ? module.exports : void 0) != null) {
     module.exports = AdminApiClient;
   } else if (typeof window !== "undefined" && window !== null) {
-    window.C25AdminApiClient = AdminApiClient;
+    window.AdminApiClient = AdminApiClient;
   }
 })();
