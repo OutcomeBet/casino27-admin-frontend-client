@@ -107,6 +107,6 @@ do ->
   if module?.exports?
     module.exports = AdminApiClient
   else if window?
-    window.C25AdminApiClient = AdminApiClient
+    window.AdminApiClient = AdminApiClient
 
   return
