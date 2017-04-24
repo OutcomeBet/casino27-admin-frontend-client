@@ -1,9 +1,10 @@
 do ->
-  unless window.JSONRPC2
-    if typeof require == 'function'
-      `let JSONRPC2 = require('ant-jsonrpc2')`
-    else
-      throw new Error('JSONRPC2 not found');
+  if window.JSONRPC2
+    JSONRPC2 = window.JSONRPC2
+  else if typeof require == 'function'
+    JSONRPC2 = require 'ant-jsonrpc2'
+  else
+    throw new Error('JSONRPC2 not found');
 
   class AdminApiClient
     constructor: (options)->

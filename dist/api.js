@@ -1,11 +1,11 @@
 (function() {
-  var AdminApiClient;
-  if (!window.JSONRPC2) {
-    if (typeof require === 'function') {
-      let JSONRPC2 = require('ant-jsonrpc2');
-    } else {
-      throw new Error('JSONRPC2 not found');
-    }
+  var AdminApiClient, JSONRPC2;
+  if (window.JSONRPC2) {
+    JSONRPC2 = window.JSONRPC2;
+  } else if (typeof require === 'function') {
+    JSONRPC2 = require('ant-jsonrpc2');
+  } else {
+    throw new Error('JSONRPC2 not found');
   }
   AdminApiClient = (function() {
     function AdminApiClient(options) {
