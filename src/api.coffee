@@ -35,7 +35,8 @@ do ->
           .then (data)->
             log 'got', 'OK', data
             resolve()
-          .catch (err)->
+          # catch
+          , (err)->
             log 'got', 'Error', err #.status, err.statusText, err.responseText
             # ignore error, continue
             resolve()

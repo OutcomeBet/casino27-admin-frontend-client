@@ -39,7 +39,7 @@ var hasProp = {}.hasOwnProperty;
         }).then(function(data) {
           log('got', 'OK', data);
           return resolve();
-        })["catch"](function(err) {
+        }, function(err) {
           log('got', 'Error', err);
           return resolve();
         });
