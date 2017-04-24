@@ -1,6 +1,6 @@
 {
   "name": "ant-admin-api-client",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -9,7 +9,8 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "ant-jsonrpc2": "git+https://github.com/Scukerman/jsonrpc2.git"
+    "ant-jsonrpc2": "git+https://github.com/Scukerman/jsonrpc2.git",
+    "jquery": "^3.2.1"
   },
   "devDependencies": {
     "gulp": "^3.9.1",

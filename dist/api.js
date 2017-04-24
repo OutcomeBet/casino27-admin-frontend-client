@@ -1,3 +1,5 @@
+var hasProp = {}.hasOwnProperty;
+
 (function() {
   var AdminApiClient, JSONRPC2;
   if (window.JSONRPC2) {
@@ -9,7 +11,44 @@
   }
   AdminApiClient = (function() {
     function AdminApiClient(options) {
+      var host, m;
       this.url = options.url, this.onopen = options.onopen, this.onclose = options.onclose, this.log = options.logFn;
+      if (!(m = this.url.match('^wss?://([^\/]+)'))) {
+        throw new Error('Incorrect URL. It should start from ws:// or wss://');
+      }
+      host = m[1];
+      if (location.host !== host) {
+        this.getHttpCookie().then(this.connectWS.bind(this));
+      } else {
+        this.connectWS();
+      }
+    }
+
+    AdminApiClient.prototype.getHttpCookie = function() {
+      var http_url, log, m;
+      m = this.url.match('ws(s?)://(.+)$');
+      http_url = "http" + m[1] + "://" + m[2];
+      log = this.log;
+      return new Promise(function(resolve, reject) {
+        log('get', 'Sending GET...', http_url);
+        return $.ajax(http_url, {
+          crossDomain: true,
+          xhrFields: {
+            withCredentials: true
+          }
+        }).then(function(data) {
+          log('got', 'OK', data);
+          return resolve();
+        })["catch"](function(err) {
+          log('got', 'Error', err);
+          return resolve();
+        });
+      });
+    };
+
+    AdminApiClient.prototype.connectWS = function() {
+      var name, rcvr, ref;
+      this.log('ws', 'Opening WS...', this.url);
       this.transport = new JSONRPC2.Transport.Websocket({
         url: this.url,
         onOpenHandler: this.onOpenHandler.bind(this),
@@ -17,14 +56,25 @@
       });
       this.client = new JSONRPC2.Client(this.transport).useDebug(this.debug);
       this.server = new JSONRPC2.Server(this.transport).useDebug(this.debug);
-    }
+      if (this.tmpRecievers) {
+        ref = this.tmpRecievers;
+        for (name in ref) {
+          if (!hasProp.call(ref, name)) continue;
+          rcvr = ref[name];
+          this.addReciever(name, rcvr);
+        }
+        delete this.tmpRecievers;
+      }
+    };
 
     AdminApiClient.prototype.onOpenHandler = function() {
+      this.log('ws', 'WS Opened');
       this.connected = true;
       return typeof this.onopen === "function" ? this.onopen() : void 0;
     };
 
     AdminApiClient.prototype.onCloseHandler = function() {
+      this.log('ws', 'WS Closed');
       this.connected = false;
       return typeof this.onclose === "function" ? this.onclose() : void 0;
     };
@@ -36,7 +86,15 @@
      */
 
     AdminApiClient.prototype.addReciever = function(name, rcvr) {
-      return this.server.register(name, rcvr);
+      if (this.server) {
+        return this.server.register(name, rcvr);
+      } else {
+        if (this.tmpRecievers == null) {
+          this.tmpRecievers = {};
+        }
+        this.tmpRecievers[name] = rcvr;
+        return false;
+      }
     };
 
     AdminApiClient.prototype.request = function(action, data) {
