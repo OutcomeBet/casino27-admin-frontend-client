@@ -1,7 +1,7 @@
 do ->
-  if typeof JSONRPC2 == 'undefined'
+  unless window.JSONRPC2
     if typeof require == 'function'
-      `var JSONRPC2 = require('ant-jsonrpc2')`
+      `let JSONRPC2 = require('ant-jsonrpc2')`
     else
       throw new Error('JSONRPC2 not found');
 
