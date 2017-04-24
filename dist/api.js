@@ -1,8 +1,8 @@
 (function() {
-  var AdminApiClient, JSONRPC2;
+  var AdminApiClient;
   if (typeof JSONRPC2 === 'undefined') {
     if (typeof require === 'function') {
-      JSONRPC2 = require('ant-jsonrpc2');
+      var JSONRPC2 = require('ant-jsonrpc2');
     } else {
       throw new Error('JSONRPC2 not found');
     }
