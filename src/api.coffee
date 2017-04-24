@@ -2,7 +2,7 @@ do ->
   if window.JSONRPC2
     JSONRPC2 = window.JSONRPC2
   else if typeof require == 'function'
-    JSONRPC2 = require 'ant-jsonrpc2'
+    JSONRPC2 = require 'ant-jsonrpc2/dist/jsonrpc2'
   else
     throw new Error('JSONRPC2 not found');
 
