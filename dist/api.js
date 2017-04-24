@@ -1,10 +1,14 @@
 (function() {
-  var AdminApiClient;
+  var AdminApiClient, JSONRPC2;
+  if (typeof JSONRPC2 === 'undefined') {
+    if (typeof require === 'function') {
+      JSONRPC2 = require('ant-jsonrpc2');
+    } else {
+      throw new Error('JSONRPC2 not found');
+    }
+  }
   AdminApiClient = (function() {
     function AdminApiClient(options) {
-      if (typeof JSONRPC2 === "undefined" || JSONRPC2 === null) {
-        throw new Error('JSONRPC2 not found');
-      }
       this.url = options.url, this.onopen = options.onopen, this.onclose = options.onclose, this.log = options.logFn;
       this.transport = new JSONRPC2.Transport.Websocket({
         url: this.url,

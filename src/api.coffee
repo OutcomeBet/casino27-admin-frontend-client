@@ -1,10 +1,12 @@
 do ->
+  if typeof JSONRPC2 == 'undefined'
+    if typeof require == 'function'
+      JSONRPC2 = require 'ant-jsonrpc2'
+    else
+      throw new Error('JSONRPC2 not found');
 
   class AdminApiClient
     constructor: (options)->
-      unless JSONRPC2?
-        throw new Error 'JSONRPC2 not found'
-
       {@url, @onopen, @onclose, logFn: @log} = options
 
       @transport  = new JSONRPC2.Transport.Websocket {
