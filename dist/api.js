@@ -124,6 +124,21 @@ var hasProp = {}.hasOwnProperty;
       })(this));
     };
 
+    AdminApiClient.prototype.convertOrder = function(order) {
+      if (order && order instanceof Array) {
+        return order.map(function(arg) {
+          var desc, field;
+          field = arg[0], desc = arg[1];
+          return {
+            field: field,
+            direction: desc && 'desc' || 'asc'
+          };
+        });
+      } else {
+        return null;
+      }
+    };
+
     AdminApiClient.prototype.auth = function(login, password) {
       return this.request('Auth.GetUser');
     };
@@ -135,8 +150,24 @@ var hasProp = {}.hasOwnProperty;
       });
     };
 
-    AdminApiClient.prototype.casinoList = function() {
-      return this.request('Casino.List');
+    AdminApiClient.prototype.casinoList = function(filter, order, offset, limit) {
+      var params;
+      if (filter || order || offset || limit) {
+        params = {
+          beta_filter: filter,
+          offset: offset,
+          limit: limit,
+          order: this.convertOrder(order)
+        };
+      } else {
+        params = null;
+      }
+      return this.request('Casino.List', params).then(function(data) {
+        data.items = data.items.map(function(item) {
+          return item.item;
+        });
+        return data;
+      });
     };
 
 
@@ -158,12 +189,12 @@ var hasProp = {}.hasOwnProperty;
      * @params {object} params - Casino params (as in @casinoCreate)
      */
 
-    AdminApiClient.prototype.casinoUpdate = function(id, params) {
+    AdminApiClient.prototype.casinoUpdate = function(id, fields) {
       return this.request('Casino.Update', {
         pk: {
           id: id
         },
-        item: params
+        fields: fields
       });
     };
 
@@ -173,18 +204,9 @@ var hasProp = {}.hasOwnProperty;
         params = {
           beta_filter: filter,
           offset: offset,
-          limit: limit
+          limit: limit,
+          order: this.convertOrder(order)
         };
-        if (order && order instanceof Array) {
-          params.order = order.map(function(arg) {
-            var desc, field;
-            field = arg[0], desc = arg[1];
-            return {
-              field: field,
-              direction: desc && 'desc' || 'asc'
-            };
-          });
-        }
       } else {
         params = null;
       }
@@ -208,12 +230,12 @@ var hasProp = {}.hasOwnProperty;
       });
     };
 
-    AdminApiClient.prototype.gameUpdate = function(id, params) {
+    AdminApiClient.prototype.gameUpdate = function(id, fields) {
       return this.request('Game.Update', {
         pk: {
           id: id
         },
-        fields: params
+        fields: fields
       });
     };
 

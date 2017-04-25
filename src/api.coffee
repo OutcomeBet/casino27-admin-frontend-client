@@ -97,6 +97,12 @@ do ->
         @log? 'err', id, action, err
         null
 
+    convertOrder: (order)->
+      if order and order instanceof Array
+        order.map ([field, desc])-> {field, direction: desc && 'desc' || 'asc'}
+      else
+        null
+
 
     # API Methods
 
@@ -106,8 +112,16 @@ do ->
     login: (login, password)->
       @request 'Auth.Login', {login, password} # => {"user_name", "user_id"}
 
-    casinoList: ->
-      @request 'Casino.List'
+    casinoList: (filter, order, offset, limit)->
+      if filter || order || offset || limit
+        params = {beta_filter: filter, offset, limit, order: @convertOrder(order)}
+      else
+        params = null
+
+      @request 'Casino.List', params
+      .then (data)->
+        data.items = data.items.map (item)->item.item
+        data
 
 
     ###*
@@ -122,9 +136,8 @@ do ->
     # @param {int} id - Casino ID
     # @params {object} params - Casino params (as in @casinoCreate)
     ###
-    casinoUpdate: (id, params)->
-      @request 'Casino.Update', pk: {id}, item: params
-
+    casinoUpdate: (id, fields)->
+      @request 'Casino.Update', {pk: {id}, fields}
 
 
     #Game.List({offset, limit, beta_filter: {k: v}})
@@ -134,9 +147,7 @@ do ->
     # order: [[field:string, desc:bool]], eg: [['id'], [name, false]]
     gameList: (filter, order, offset, limit)->
       if filter || order || offset || limit
-        params = {beta_filter: filter, offset, limit}
-        if order and order instanceof Array
-          params.order = order.map ([field, desc])-> {field, direction: desc && 'desc' || 'asc'}
+        params = {beta_filter: filter, offset, limit, order: @convertOrder(order)}
       else
         params = null
 
@@ -154,8 +165,8 @@ do ->
     gameCreate: (params)->
       @request 'Game.Create', item: params
 
-    gameUpdate: (id, params)->
-      @request 'Game.Update', pk: {id}, fields: params
+    gameUpdate: (id, fields)->
+      @request 'Game.Update', {pk: {id}, fields}
 
 
   # register in system
