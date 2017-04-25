@@ -178,7 +178,7 @@ var hasProp = {}.hasOwnProperty;
       } else {
         params = null;
       }
-      return this.request('Game2.List', params).then(function(data) {
+      return this.request('Game.List', params).then(function(data) {
         data.items = data.items.map(function(item) {
           return item.item;
         });
@@ -193,13 +193,13 @@ var hasProp = {}.hasOwnProperty;
      */
 
     AdminApiClient.prototype.gameCreate = function(params) {
-      return this.request('Game2.Create', {
+      return this.request('Game.Create', {
         item: params
       });
     };
 
     AdminApiClient.prototype.gameUpdate = function(id, params) {
-      return this.request('Game2.Update', {
+      return this.request('Game.Update', {
         pk: {
           id: id
         },

@@ -127,9 +127,9 @@ do ->
 
 
 
-    #Game2.List({offset, limit, beta_filter: {k: v}})
-    #Game2.Create({item:{...}})
-    #Game2.Update(pk:{id:666}, fields: {name: "ololo"})
+    #Game.List({offset, limit, beta_filter: {k: v}})
+    #Game.Create({item:{...}})
+    #Game.Update(pk:{id:666}, fields: {name: "ololo"})
 
     gameList: (filter, order, offset, limit)->
       if filter || order || offset || limit
@@ -137,7 +137,7 @@ do ->
       else
         params = null
 
-      @request 'Game2.List', params
+      @request 'Game.List', params
       .then (data)->
         data.items = data.items.map (item)->item.item
         data
@@ -146,13 +146,13 @@ do ->
 
     ###*
     # Create Game
-    # @param {object <string_id, section>} params - Casino params
+    # @param {object} params - Casino params
     ###
     gameCreate: (params)->
-      @request 'Game2.Create', item: params
+      @request 'Game.Create', item: params
 
     gameUpdate: (id, params)->
-      @request 'Game2.Update', pk: {id}, fields: params
+      @request 'Game.Update', pk: {id}, fields: params
 
 
   # register in system
