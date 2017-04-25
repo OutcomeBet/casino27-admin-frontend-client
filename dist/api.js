@@ -175,6 +175,16 @@ var hasProp = {}.hasOwnProperty;
           offset: offset,
           limit: limit
         };
+        if (order && order instanceof Array) {
+          params.order = order.map(function(arg) {
+            var desc, field;
+            field = arg[0], desc = arg[1];
+            return {
+              field: field,
+              direction: desc && 'desc' || 'asc'
+            };
+          });
+        }
       } else {
         params = null;
       }
@@ -189,7 +199,7 @@ var hasProp = {}.hasOwnProperty;
 
     /**
      * Create Game
-     * @param {object <string_id, section>} params - Casino params
+     * @param {object} params - Casino params
      */
 
     AdminApiClient.prototype.gameCreate = function(params) {

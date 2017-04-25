@@ -131,9 +131,12 @@ do ->
     #Game.Create({item:{...}})
     #Game.Update(pk:{id:666}, fields: {name: "ololo"})
 
+    # order: [[field:string, desc:bool]], eg: [['id'], [name, false]]
     gameList: (filter, order, offset, limit)->
       if filter || order || offset || limit
         params = {beta_filter: filter, offset, limit}
+        if order and order instanceof Array
+          params.order = order.map ([field, desc])-> {field, direction: desc && 'desc' || 'asc'}
       else
         params = null
 
