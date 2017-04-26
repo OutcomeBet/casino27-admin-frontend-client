@@ -89,7 +89,7 @@ do ->
 
       @log? 'out', id, action, data
 
-      new Promise (resolve, reject)->
+      new Promise (resolve, reject)=>
         req.send(@client)
         .then (data)=>
           @log? 'in', id, action, data

@@ -107,23 +107,21 @@ var hasProp = {}.hasOwnProperty;
       if (typeof this.log === "function") {
         this.log('out', id, action, data);
       }
-      return new Promise(function(resolve, reject) {
-        return req.send(this.client).then((function(_this) {
-          return function(data) {
+      return new Promise((function(_this) {
+        return function(resolve, reject) {
+          return req.send(_this.client).then(function(data) {
             if (typeof _this.log === "function") {
               _this.log('in', id, action, data);
             }
             return resolve(data);
-          };
-        })(this), (function(_this) {
-          return function(err) {
+          }, function(err) {
             if (typeof _this.log === "function") {
               _this.log('err', id, action, err);
             }
             return reject(err);
-          };
-        })(this));
-      });
+          });
+        };
+      })(this));
     };
 
     AdminApiClient.prototype.convertOrder = function(order) {
