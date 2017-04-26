@@ -125,7 +125,12 @@ do ->
 
       @request 'Casino.List', params
       .then (data)->
-        data.items = data.items.map (item)->item.item
+        data.items =
+          if data.items
+            data.items.map (item)->item.item
+          else
+            []
+
         data
 
 
@@ -158,7 +163,12 @@ do ->
 
       @request 'Game.List', params
       .then (data)->
-        data.items = data.items.map (item)->item.item
+        data.items =
+          if data.items
+            data.items.map (item)->item.item
+          else
+            []
+
         data
 
     # <description, id, name, string_id, type_id>

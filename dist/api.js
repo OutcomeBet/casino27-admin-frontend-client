@@ -167,9 +167,9 @@ var hasProp = {}.hasOwnProperty;
         params = null;
       }
       return this.request('Casino.List', params).then(function(data) {
-        data.items = data.items.map(function(item) {
+        data.items = data.items ? data.items.map(function(item) {
           return item.item;
-        });
+        }) : [];
         return data;
       });
     };
@@ -215,9 +215,9 @@ var hasProp = {}.hasOwnProperty;
         params = null;
       }
       return this.request('Game.List', params).then(function(data) {
-        data.items = data.items.map(function(item) {
+        data.items = data.items ? data.items.map(function(item) {
           return item.item;
-        });
+        }) : [];
         return data;
       });
     };
