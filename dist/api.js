@@ -114,7 +114,7 @@ var hasProp = {}.hasOwnProperty;
           }
           return data;
         };
-      })(this))["catch"]((function(_this) {
+      })(this), (function(_this) {
         return function(err) {
           if (typeof _this.log === "function") {
             _this.log('err', id, action, err);
@@ -148,6 +148,10 @@ var hasProp = {}.hasOwnProperty;
         login: login,
         password: password
       });
+    };
+
+    AdminApiClient.prototype.logout = function() {
+      return this.request('Auth.Logout');
     };
 
     AdminApiClient.prototype.casinoList = function(filter, order, offset, limit) {

@@ -93,7 +93,8 @@ do ->
       .then (data)=>
         @log? 'in', id, action, data
         data
-      .catch (err)=>
+      # catch
+      , (err)=>
         @log? 'err', id, action, err
         null
 
@@ -111,6 +112,9 @@ do ->
 
     login: (login, password)->
       @request 'Auth.Login', {login, password} # => {"user_name", "user_id"}
+
+    logout: ->
+      @request 'Auth.Logout'
 
     casinoList: (filter, order, offset, limit)->
       if filter || order || offset || limit
