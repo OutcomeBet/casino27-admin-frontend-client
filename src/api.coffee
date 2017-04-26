@@ -89,14 +89,15 @@ do ->
 
       @log? 'out', id, action, data
 
-      req.send(@client)
-      .then (data)=>
-        @log? 'in', id, action, data
-        data
-      # catch
-      , (err)=>
-        @log? 'err', id, action, err
-        null
+      new Promise (resolve, reject)->
+        req.send(@client)
+        .then (data)=>
+          @log? 'in', id, action, data
+          resolve data
+        # catch
+        , (err)=>
+          @log? 'err', id, action, err
+          reject(err)
 
     convertOrder: (order)->
       if order and order instanceof Array
