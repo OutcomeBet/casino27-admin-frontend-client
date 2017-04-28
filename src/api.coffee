@@ -105,6 +105,15 @@ do ->
       else
         null
 
+    outputPlainItemsData: (data)->
+      data.items =
+        if data.items
+          data.items.map (item)->item.item
+        else
+          []
+
+      data
+
 
     # API Methods
 
@@ -124,14 +133,7 @@ do ->
         params = null
 
       @request 'Casino.List', params
-      .then (data)->
-        data.items =
-          if data.items
-            data.items.map (item)->item.item
-          else
-            []
-
-        data
+      .then @outputPlainItemsData.bind(@)
 
 
     ###*
@@ -162,14 +164,7 @@ do ->
         params = null
 
       @request 'Game.List', params
-      .then (data)->
-        data.items =
-          if data.items
-            data.items.map (item)->item.item
-          else
-            []
-
-        data
+      .then @outputPlainItemsData.bind(@)
 
     # <description, id, name, string_id, type_id>
 
@@ -182,6 +177,23 @@ do ->
 
     gameUpdate: (id, fields)->
       @request 'Game.Update', {pk: {id}, fields}
+
+
+    gameSectionList: (filter, order, offset, limit)->
+      if filter || order || offset || limit
+        params = {beta_filter: filter, offset, limit, order: @convertOrder(order)}
+      else
+        params = null
+
+      @request 'GameSection.List', params
+      .then @outputPlainItemsData.bind(@)
+
+    # <id, name, string_id>
+    gameSectionCreate: (params)->
+      @request 'GameSection.Create', item: params
+
+    gameSectionUpdate: (id, fields)->
+      @request 'GameSection.Update', {pk: {id}, fields}
 
 
   # register in system

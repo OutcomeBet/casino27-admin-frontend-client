@@ -139,6 +139,13 @@ var hasProp = {}.hasOwnProperty;
       }
     };
 
+    AdminApiClient.prototype.outputPlainItemsData = function(data) {
+      data.items = data.items ? data.items.map(function(item) {
+        return item.item;
+      }) : [];
+      return data;
+    };
+
     AdminApiClient.prototype.auth = function(login, password) {
       return this.request('Auth.GetUser');
     };
@@ -166,12 +173,7 @@ var hasProp = {}.hasOwnProperty;
       } else {
         params = null;
       }
-      return this.request('Casino.List', params).then(function(data) {
-        data.items = data.items ? data.items.map(function(item) {
-          return item.item;
-        }) : [];
-        return data;
-      });
+      return this.request('Casino.List', params).then(this.outputPlainItemsData.bind(this));
     };
 
 
@@ -214,12 +216,7 @@ var hasProp = {}.hasOwnProperty;
       } else {
         params = null;
       }
-      return this.request('Game.List', params).then(function(data) {
-        data.items = data.items ? data.items.map(function(item) {
-          return item.item;
-        }) : [];
-        return data;
-      });
+      return this.request('Game.List', params).then(this.outputPlainItemsData.bind(this));
     };
 
 
@@ -236,6 +233,36 @@ var hasProp = {}.hasOwnProperty;
 
     AdminApiClient.prototype.gameUpdate = function(id, fields) {
       return this.request('Game.Update', {
+        pk: {
+          id: id
+        },
+        fields: fields
+      });
+    };
+
+    AdminApiClient.prototype.gameSectionList = function(filter, order, offset, limit) {
+      var params;
+      if (filter || order || offset || limit) {
+        params = {
+          beta_filter: filter,
+          offset: offset,
+          limit: limit,
+          order: this.convertOrder(order)
+        };
+      } else {
+        params = null;
+      }
+      return this.request('GameSection.List', params).then(this.outputPlainItemsData.bind(this));
+    };
+
+    AdminApiClient.prototype.gameSectionCreate = function(params) {
+      return this.request('GameSection.Create', {
+        item: params
+      });
+    };
+
+    AdminApiClient.prototype.gameSectionUpdate = function(id, fields) {
+      return this.request('GameSection.Update', {
         pk: {
           id: id
         },
