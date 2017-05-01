@@ -11,8 +11,9 @@ var hasProp = {}.hasOwnProperty;
   }
   AdminApiClient = (function() {
     function AdminApiClient(options) {
-      var host, m;
-      this.url = options.url, this.onopen = options.onopen, this.onclose = options.onclose, this.log = options.logFn;
+      var host, m, ref;
+      this.options = options;
+      ref = this.options, this.url = ref.url, this.onopen = ref.onopen, this.onclose = ref.onclose, this.log = ref.logFn, this.errorHandler = ref.errorHandler;
       if (!(m = this.url.match('^wss?://([^\/]+)'))) {
         throw new Error('Incorrect URL. It should start from ws:// or wss://');
       }
@@ -51,6 +52,8 @@ var hasProp = {}.hasOwnProperty;
       this.log('ws', 'Opening WS...', this.url);
       this.transport = new JSONRPC2.Transport.Websocket({
         url: this.url,
+        alwaysReconnectOnClose: true,
+        maxReconnectAttempts: this.options.maxReconnectAttempts,
         onOpenHandler: this.onOpenHandler.bind(this),
         onCloseHandler: this.onCloseHandler.bind(this)
       });
@@ -118,7 +121,11 @@ var hasProp = {}.hasOwnProperty;
             if (typeof _this.log === "function") {
               _this.log('err', id, action, err);
             }
-            return reject(err);
+            if (_this.errorHandler) {
+              return _this.errorHandler(err);
+            } else {
+              return reject(err);
+            }
           });
         };
       })(this));

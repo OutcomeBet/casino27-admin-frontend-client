@@ -1,0 +1,282 @@
+doctype html
+html
+  head
+    meta(charset="utf-8")
+    title JSON RPC test
+
+    link(href="node_modules/normalize.css/normalize.css" rel="stylesheet")
+
+    script(src="node_modules/jquery/dist/jquery.js")
+    script(src="node_modules/lodash/lodash.js")
+    script(src="node_modules/ant-jsonrpc2/dist/jsonrpc2.js")
+    //script(src="dist/js/jsonrpc2.js")
+
+    link(href="dist/demo/css/main.css" rel="stylesheet")
+
+    script(src="dist/demo/js/main.js")
+    script(src="dist/api.js")
+
+  body
+    .row
+      label
+        | URL:
+        input#val-url(type="text")
+
+    .row
+      button#btn-connect.btn Connect
+      button#btn-auth.btn Auth.GetUser
+      button#btn-login.btn Auth.Login
+      button#btn-logout.btn Auth.Logout
+
+    .row
+      label
+        input#val-autoconnect(type="checkbox")
+        | &nbsp;Auto connect
+
+
+    fieldset.row
+      legend Casino
+      section
+        fieldset.row
+          legend Filter
+          section
+            .row
+              label.inline(for="val-casino-filter-id") id
+              input#val-casino-filter-id
+            .row
+              label.inline(for="val-casino-filter-string-id") string_id
+              input#val-casino-filter-string-id
+            .row
+              label.inline(for="val-casino-filter-site") site
+              input#val-casino-filter-site
+            .row
+              label.inline(for="val-casino-filter-site") create_time
+              input#val-casino-filter-create-time
+            .row
+              label.inline(for="val-casino-filter-site") active
+              select#val-casino-filter-active
+                option(value="") &nbsp;
+                option(value="true") true
+                option(value="false") false
+            .row
+              label.inline(for="val-casino-filter-offset") offset
+              input#val-casino-filter-offset
+            .row
+              label.inline(for="val-casino-filter-limit") limit
+              input#val-casino-filter-limit
+
+        fieldset.row
+          legend Order
+          section
+            .row
+              label
+                | Field
+                select#val-casino-order-field0
+                  option(value="") &nbsp;
+                  option(value="id") id
+                  option(value="string_id") string_id
+                  option(value="site") site
+                  option(value="create_time") create_time
+                  option(value="active") active
+              label
+                | Desc
+                input#val-casino-order-desc0(type="checkbox")
+            .row
+              label
+                | Field
+                select#val-casino-order-field1
+                  option(value="") &nbsp;
+                  option(value="id") id
+                  option(value="string_id") string_id
+                  option(value="site") site
+                  option(value="create_time") create_time
+                  option(value="active") active
+              label
+                | Desc
+                input#val-casino-order-desc1(type="checkbox")
+
+        .row
+          button#btn-casino-list.btn List
+
+        fieldset.row
+          legend Create/Update
+          section
+            .row
+              label.inline(for="val-casino-id") id
+              input#val-casino-id
+            .row
+              label.inline(for="val-casino-string-id") string_id
+              input#val-casino-string-id
+            .row
+              label.inline(for="val-casino-site") site
+              input#val-casino-site
+            .row
+              label.inline(for="val-casino-active") active
+              input(type="checkbox")#val-casino-active
+            .row
+              button#btn-casino-create.btn Create
+              button#btn-casino-update.btn Update
+
+
+    fieldset.row
+      legend Game
+      section
+        fieldset.row
+          legend Filter
+          section
+            .row
+              label.inline(for="val-game-filter-id") id
+              input#val-game-filter-id
+            .row
+              label.inline(for="val-game-filter-string-id") string_id
+              input#val-game-filter-string-id
+            .row
+              label.inline(for="val-game-filter-name") name
+              input#val-game-filter-name
+            .row
+              label.inline(for="val-game-filter-description") description
+              input#val-game-filter-description
+            .row
+              label.inline(for="val-game-filter-offset") offset
+              input#val-game-filter-offset
+            .row
+              label.inline(for="val-game-filter-limit") limit
+              input#val-game-filter-limit
+
+        fieldset.row
+          legend Order
+          section
+            .row
+              label
+                | Field
+                select#val-game-order-field0
+                  option(value="") &nbsp;
+                  option(value="id") id
+                  option(value="name") name
+                  option(value="string_id") string_id
+                  option(value="description") description
+              label
+                | Desc
+                input#val-game-order-desc0(type="checkbox")
+            .row
+              label
+                | Field
+                select#val-game-order-field1
+                  option(value="") &nbsp;
+                  option(value="id") id
+                  option(value="name") name
+                  option(value="string_id") string_id
+                  option(value="description") description
+              label
+                | Desc
+                input#val-game-order-desc1(type="checkbox")
+
+
+        .row
+          button#btn-game-list.btn List
+
+        fieldset.row
+          legend Create/Update
+          section
+            .row
+              label.inline(for="val-game-id") id
+              input#val-game-id
+            .row
+              label.inline(for="val-game-string-id") string_id
+              input#val-game-string-id
+            .row
+              label.inline(for="val-game-name") name
+              input#val-game-name
+            .row
+              label.inline(for="val-game-description") description
+              input#val-game-description
+            .row
+              button#btn-game-create.btn Create
+              button#btn-game-update.btn Update
+
+    fieldset.row
+      legend GameSection
+      section
+        fieldset.row
+          legend Filter
+          section
+            .row
+              label.inline(for="val-gamesection-filter-id") id
+              input#val-gamesection-filter-id
+            .row
+              label.inline(for="val-gamesection-filter-string-id") string_id
+              input#val-gamesection-filter-string-id
+            .row
+              label.inline(for="val-gamesection-filter-name") name
+              input#val-gamesection-filter-name
+            .row
+              label.inline(for="val-gamesection-filter-offset") offset
+              input#val-gamesection-filter-offset
+            .row
+              label.inline(for="val-gamesection-filter-limit") limit
+              input#val-gamesection-filter-limit
+
+        fieldset.row
+          legend Order
+          section
+            .row
+              label
+                | Field
+                select#val-gamesection-order-field0
+                  option(value="") &nbsp;
+                  option(value="id") id
+                  option(value="name") name
+                  option(value="string_id") string_id
+              label
+                | Desc
+                input#val-game-gamesection-desc0(type="checkbox")
+            .row
+              label
+                | Field
+                select#val-gamesection-order-field1
+                  option(value="") &nbsp;
+                  option(value="id") id
+                  option(value="name") name
+                  option(value="string_id") string_id
+              label
+                | Desc
+                input#val-gamesection-order-desc1(type="checkbox")
+
+
+        .row
+          button#btn-gamesection-list.btn List
+
+        fieldset.row
+          legend Create/Update
+          section
+            .row
+              label.inline(for="val-gamesection-id") id
+              input#val-gamesection-id
+            .row
+              label.inline(for="val-gamesection-string-id") string_id
+              input#val-gamesection-string-id
+            .row
+              label.inline(for="val-gamesection-name") name
+              input#val-gamesection-name
+            .row
+              button#btn-gamesection-create.btn Create
+              button#btn-gamesection-update.btn Update
+
+    fieldset.row
+      legend Custom Method
+      section
+        .row: input#val-method
+
+        .row: label(for="val-params") Params (JSON):
+        .row
+          | {
+          textarea(rows="5")#val-params
+          | }
+
+        .row
+          button#btn-send Send
+
+    .row
+      button#btn-cls(style="display: none") cls
+
+    pre#out

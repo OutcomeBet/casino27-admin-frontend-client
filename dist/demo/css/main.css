@@ -1,0 +1,72 @@
+@charset "UTF-8";
+* {
+  box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  padding: 0; }
+
+body {
+  padding: 10px;
+  font-size: 15px;
+  color: black;
+  background: white; }
+
+pre#out {
+  overflow: auto;
+  padding: 5px;
+  margin-top: 0;
+  border: 1px solid #999; }
+  pre#out:empty {
+    display: none; }
+  pre#out .ws {
+    background: rgba(255, 0, 255, 0.3); }
+  pre#out .out {
+    background: rgba(0, 128, 0, 0.3); }
+  pre#out .in {
+    background: rgba(0, 0, 255, 0.3); }
+  pre#out .err {
+    background: rgba(255, 0, 0, 0.3); }
+  pre#out .rcv {
+    background: rgba(255, 255, 0, 0.3); }
+  pre#out table {
+    border-collapse: collapse; }
+    pre#out table tr:hover {
+      background: #eee; }
+    pre#out table td, pre#out table th {
+      border: 1px solid #ccc;
+      padding: 3px; }
+
+.row {
+  padding: 5px;
+  margin-bottom: 10px; }
+  .row .row {
+    padding: 0;
+    margin-bottom: 5px; }
+  .row.border {
+    border: 1px solid #ccc; }
+
+label.inline {
+  width: 100px;
+  display: inline-block; }
+
+#val-params {
+  vertical-align: middle; }
+
+fieldset {
+  padding: 0; }
+  fieldset > legend {
+    font-weight: bold;
+    padding: 3px;
+    cursor: pointer; }
+    fieldset > legend:before {
+      font-family: monospace;
+      content: '▶';
+      margin-right: 3px; }
+  fieldset > section {
+    padding: 5px;
+    display: none; }
+  fieldset.open > legend:before {
+    content: '▼'; }
+  fieldset.open > section {
+    display: block; }

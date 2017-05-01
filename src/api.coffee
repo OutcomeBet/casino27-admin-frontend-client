@@ -7,9 +7,9 @@ do ->
     throw new Error('JSONRPC2 not found');
 
   class AdminApiClient
-    constructor: (options)->
+    constructor: (@options)->
       # extract options
-      {@url, @onopen, @onclose, logFn: @log} = options
+      {@url, @onopen, @onclose, logFn: @log, @errorHandler} = @options
 
       unless m = @url.match '^wss?://([^\/]+)'
         throw new Error 'Incorrect URL. It should start from ws:// or wss://'
@@ -46,6 +46,8 @@ do ->
 
       @transport  = new JSONRPC2.Transport.Websocket {
         @url
+        alwaysReconnectOnClose: true
+        maxReconnectAttempts: @options.maxReconnectAttempts
         onOpenHandler: @onOpenHandler.bind(@)
         onCloseHandler: @onCloseHandler.bind(@)}
       @client     = new JSONRPC2.Client(@transport).useDebug(@debug)
@@ -97,7 +99,10 @@ do ->
         # catch
         , (err)=>
           @log? 'err', id, action, err
-          reject(err)
+          if @errorHandler
+            @errorHandler(err)
+          else
+            reject(err)
 
     convertOrder: (order)->
       if order and order instanceof Array

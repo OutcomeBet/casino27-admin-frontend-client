@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>JSON RPC test</title>
+    <link href="node_modules/normalize.css/normalize.css" rel="stylesheet">
+    <script src="node_modules/jquery/dist/jquery.js"></script>
+    <script src="node_modules/lodash/lodash.js"></script>
+    <script src="node_modules/ant-jsonrpc2/dist/jsonrpc2.js"></script>
+    <!--script(src="dist/js/jsonrpc2.js")-->
+    <link href="dist/demo/css/main.css" rel="stylesheet">
+    <script src="dist/demo/js/main.js"></script>
+    <script src="dist/api.js"></script>
+  </head>
+  <body>
+    <div class="row">
+      <label>URL:
+        <input id="val-url" type="text">
+      </label>
+    </div>
+    <div class="row">
+      <button class="btn" id="btn-connect">Connect</button>
+      <button class="btn" id="btn-auth">Auth.GetUser</button>
+      <button class="btn" id="btn-login">Auth.Login</button>
+      <button class="btn" id="btn-logout">Auth.Logout</button>
+    </div>
+    <div class="row">
+      <label>
+        <input id="val-autoconnect" type="checkbox">&nbsp;Auto connect
+      </label>
+    </div>
+    <fieldset class="row">
+      <legend>Casino</legend>
+      <section>
+        <fieldset class="row">
+          <legend>Filter</legend>
+          <section>
+            <div class="row">
+              <label class="inline" for="val-casino-filter-id">id</label>
+              <input id="val-casino-filter-id">
+            </div>
+            <div class="row">
+              <label class="inline" for="val-casino-filter-string-id">string_id</label>
+              <input id="val-casino-filter-string-id">
+            </div>
+            <div class="row">
+              <label class="inline" for="val-casino-filter-site">site</label>
+              <input id="val-casino-filter-site">
+            </div>
+            <div class="row">
+              <label class="inline" for="val-casino-filter-site">create_time</label>
+              <input id="val-casino-filter-create-time">
+            </div>
+            <div class="row">
+              <label class="inline" for="val-casino-filter-site">active</label>
+              <select id="val-casino-filter-active">
+                <option value="">&nbsp;</option>
+                <option value="true">true</option>
+                <option value="false">false</option>
+              </select>
+            </div>
+            <div class="row">
+              <label class="inline" for="val-casino-filter-offset">offset</label>
+              <input id="val-casino-filter-offset">
+            </div>
+            <div class="row">
+              <label class="inline" for="val-casino-filter-limit">limit</label>
+              <input id="val-casino-filter-limit">
+            </div>
+          </section>
+        </fieldset>
+        <fieldset class="row">
+          <legend>Order</legend>
+          <section>
+            <div class="row">
+              <label>Field
+                <select id="val-casino-order-field0">
+                  <option value="">&nbsp;</option>
+                  <option value="id">id</option>
+                  <option value="string_id">string_id</option>
+                  <option value="site">site</option>
+                  <option value="create_time">create_time</option>
+                  <option value="active">active</option>
+                </select>
+              </label>
+              <label>Desc
+                <input id="val-casino-order-desc0" type="checkbox">
+              </label>
+            </div>
+            <div class="row">
+              <label>Field
+                <select id="val-casino-order-field1">
+                  <option value="">&nbsp;</option>
+                  <option value="id">id</option>
+                  <option value="string_id">string_id</option>
+                  <option value="site">site</option>
+                  <option value="create_time">create_time</option>
+                  <option value="active">active</option>
+                </select>
+              </label>
+              <label>Desc
+                <input id="val-casino-order-desc1" type="checkbox">
+              </label>
+            </div>
+          </section>
+        </fieldset>
+        <div class="row">
+          <button class="btn" id="btn-casino-list">List</button>
+        </div>
+        <fieldset class="row">
+          <legend>Create/Update</legend>
+          <section>
+            <div class="row">
+              <label class="inline" for="val-casino-id">id</label>
+              <input id="val-casino-id">
+            </div>
+            <div class="row">
+              <label class="inline" for="val-casino-string-id">string_id</label>
+              <input id="val-casino-string-id">
+            </div>
+            <div class="row">
+              <label class="inline" for="val-casino-site">site</label>
+              <input id="val-casino-site">
+            </div>
+            <div class="row">
+              <label class="inline" for="val-casino-active">active</label>
+              <input type="checkbox" id="val-casino-active">
+            </div>
+            <div class="row">
+              <button class="btn" id="btn-casino-create">Create</button>
+              <button class="btn" id="btn-casino-update">Update</button>
+            </div>
+          </section>
+        </fieldset>
+      </section>
+    </fieldset>
+    <fieldset class="row">
+      <legend>Game</legend>
+      <section>
+        <fieldset class="row">
+          <legend>Filter</legend>
+          <section>
+            <div class="row">
+              <label class="inline" for="val-game-filter-id">id</label>
+              <input id="val-game-filter-id">
+            </div>
+            <div class="row">
+              <label class="inline" for="val-game-filter-string-id">string_id</label>
+              <input id="val-game-filter-string-id">
+            </div>
+            <div class="row">
+              <label class="inline" for="val-game-filter-name">name</label>
+              <input id="val-game-filter-name">
+            </div>
+            <div class="row">
+              <label class="inline" for="val-game-filter-description">description</label>
+              <input id="val-game-filter-description">
+            </div>
+            <div class="row">
+              <label class="inline" for="val-game-filter-offset">offset</label>
+              <input id="val-game-filter-offset">
+            </div>
+            <div class="row">
+              <label class="inline" for="val-game-filter-limit">limit</label>
+              <input id="val-game-filter-limit">
+            </div>
+          </section>
+        </fieldset>
+        <fieldset class="row">
+          <legend>Order</legend>
+          <section>
+            <div class="row">
+              <label>Field
+                <select id="val-game-order-field0">
+                  <option value="">&nbsp;</option>
+                  <option value="id">id</option>
+                  <option value="name">name</option>
+                  <option value="string_id">string_id</option>
+                  <option value="description">description</option>
+                </select>
+              </label>
+              <label>Desc
+                <input id="val-game-order-desc0" type="checkbox">
+              </label>
+            </div>
+            <div class="row">
+              <label>Field
+                <select id="val-game-order-field1">
+                  <option value="">&nbsp;</option>
+                  <option value="id">id</option>
+                  <option value="name">name</option>
+                  <option value="string_id">string_id</option>
+                  <option value="description">description</option>
+                </select>
+              </label>
+              <label>Desc
+                <input id="val-game-order-desc1" type="checkbox">
+              </label>
+            </div>
+          </section>
+        </fieldset>
+        <div class="row">
+          <button class="btn" id="btn-game-list">List</button>
+        </div>
+        <fieldset class="row">
+          <legend>Create/Update</legend>
+          <section>
+            <div class="row">
+              <label class="inline" for="val-game-id">id</label>
+              <input id="val-game-id">
+            </div>
+            <div class="row">
+              <label class="inline" for="val-game-string-id">string_id</label>
+              <input id="val-game-string-id">
+            </div>
+            <div class="row">
+              <label class="inline" for="val-game-name">name</label>
+              <input id="val-game-name">
+            </div>
+            <div class="row">
+              <label class="inline" for="val-game-description">description</label>
+              <input id="val-game-description">
+            </div>
+            <div class="row">
+              <button class="btn" id="btn-game-create">Create</button>
+              <button class="btn" id="btn-game-update">Update</button>
+            </div>
+          </section>
+        </fieldset>
+      </section>
+    </fieldset>
+    <fieldset class="row">
+      <legend>GameSection</legend>
+      <section>
+        <fieldset class="row">
+          <legend>Filter</legend>
+          <section>
+            <div class="row">
+              <label class="inline" for="val-gamesection-filter-id">id</label>
+              <input id="val-gamesection-filter-id">
+            </div>
+            <div class="row">
+              <label class="inline" for="val-gamesection-filter-string-id">string_id</label>
+              <input id="val-gamesection-filter-string-id">
+            </div>
+            <div class="row">
+              <label class="inline" for="val-gamesection-filter-name">name</label>
+              <input id="val-gamesection-filter-name">
+            </div>
+            <div class="row">
+              <label class="inline" for="val-gamesection-filter-offset">offset</label>
+              <input id="val-gamesection-filter-offset">
+            </div>
+            <div class="row">
+              <label class="inline" for="val-gamesection-filter-limit">limit</label>
+              <input id="val-gamesection-filter-limit">
+            </div>
+          </section>
+        </fieldset>
+        <fieldset class="row">
+          <legend>Order</legend>
+          <section>
+            <div class="row">
+              <label>Field
+                <select id="val-gamesection-order-field0">
+                  <option value="">&nbsp;</option>
+                  <option value="id">id</option>
+                  <option value="name">name</option>
+                  <option value="string_id">string_id</option>
+                </select>
+              </label>
+              <label>Desc
+                <input id="val-game-gamesection-desc0" type="checkbox">
+              </label>
+            </div>
+            <div class="row">
+              <label>Field
+                <select id="val-gamesection-order-field1">
+                  <option value="">&nbsp;</option>
+                  <option value="id">id</option>
+                  <option value="name">name</option>
+                  <option value="string_id">string_id</option>
+                </select>
+              </label>
+              <label>Desc
+                <input id="val-gamesection-order-desc1" type="checkbox">
+              </label>
+            </div>
+          </section>
+        </fieldset>
+        <div class="row">
+          <button class="btn" id="btn-gamesection-list">List</button>
+        </div>
+        <fieldset class="row">
+          <legend>Create/Update</legend>
+          <section>
+            <div class="row">
+              <label class="inline" for="val-gamesection-id">id</label>
+              <input id="val-gamesection-id">
+            </div>
+            <div class="row">
+              <label class="inline" for="val-gamesection-string-id">string_id</label>
+              <input id="val-gamesection-string-id">
+            </div>
+            <div class="row">
+              <label class="inline" for="val-gamesection-name">name</label>
+              <input id="val-gamesection-name">
+            </div>
+            <div class="row">
+              <button class="btn" id="btn-gamesection-create">Create</button>
+              <button class="btn" id="btn-gamesection-update">Update</button>
+            </div>
+          </section>
+        </fieldset>
+      </section>
+    </fieldset>
+    <fieldset class="row">
+      <legend>Custom Method</legend>
+      <section>
+        <div class="row">
+          <input id="val-method">
+        </div>
+        <div class="row">
+          <label for="val-params">Params (JSON):</label>
+        </div>
+        <div class="row">{
+          <textarea rows="5" id="val-params"></textarea>}
+        </div>
+        <div class="row">
+          <button id="btn-send">Send</button>
+        </div>
+      </section>
+    </fieldset>
+    <div class="row">
+      <button id="btn-cls" style="display: none;">cls</button>
+    </div>
+    <pre id="out"></pre>
+  </body>
+</html>

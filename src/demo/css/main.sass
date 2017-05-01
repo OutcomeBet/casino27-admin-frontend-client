@@ -1,0 +1,96 @@
+*
+  box-sizing: border-box
+
+html, body
+  margin: 0
+  padding: 0
+
+body
+  padding: 10px
+  font-size: 15px
+  color: black
+  background: white
+
+pre#out
+  overflow: auto
+  padding: 5px
+  margin-top: 0
+  border: 1px solid #999
+
+  &:empty
+    display: none
+
+  //.get
+    background: rgba(saddlebrown, 0.3)
+
+  //.got
+    background: rgba(dodgerblue, 0.3)
+
+  .ws
+    background: rgba(magenta, 0.3)
+
+  .out
+    background: rgba(green, 0.3)
+
+  .in
+    background: rgba(blue, 0.3)
+
+  .err
+    background: rgba(red, 0.3)
+
+  .rcv
+    background: rgba(yellow, 0.3)
+
+  table
+    border-collapse: collapse
+
+    tr:hover
+      background: #eee
+
+    td, th
+      border: 1px solid #ccc
+      padding: 3px
+
+.row
+  padding: 5px
+  margin-bottom: 10px
+  //border: 1px solid #eee
+
+  .row
+    padding: 0
+    margin-bottom: 5px
+
+  &.border
+    border: 1px solid #ccc
+
+label.inline
+  width: 100px
+  display: inline-block
+
+#val-params
+  vertical-align: middle
+
+fieldset
+  padding: 0
+
+  > legend
+    font-weight: bold
+    padding: 3px
+    cursor: pointer
+
+    &:before
+      font-family: monospace
+      content: '▶'
+      margin-right: 3px
+
+  > section
+    padding: 5px
+    display: none
+
+  &.open
+    > legend
+      &:before
+        content: '▼'
+
+    > section
+      display: block
