@@ -184,6 +184,9 @@ do ->
       @request 'Game.Update', {pk: {id}, fields}
 
 
+    ###*
+    # Get Games Sections list
+    ###
     gameSectionList: (filter, order, offset, limit)->
       if filter || order || offset || limit
         params = {beta_filter: filter, offset, limit, order: @convertOrder(order)}
@@ -199,6 +202,26 @@ do ->
 
     gameSectionUpdate: (id, fields)->
       @request 'GameSection.Update', {pk: {id}, fields}
+
+
+    ###*
+    # Get Games Types list
+    ###
+    gameTypeList: (filter, order, offset, limit)->
+      if filter || order || offset || limit
+        params = {beta_filter: filter, offset, limit, order: @convertOrder(order)}
+      else
+        params = null
+
+      @request 'GameType.List', params
+      .then @outputPlainItemsData.bind(@)
+
+    # <id, name, string_id>
+    gameTypeCreate: (params)->
+      @request 'GameType.Create', item: params
+
+    gameTypeUpdate: (id, fields)->
+      @request 'GameType.Update', {pk: {id}, fields}
 
 
   # register in system

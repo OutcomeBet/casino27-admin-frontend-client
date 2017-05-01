@@ -58,7 +58,6 @@ do ->
   # @param {string...} item List of values names
   ###
   initValues = (items...)->
-    debugger
     for name in items
       do (name)->
 
@@ -125,11 +124,12 @@ do ->
   # on ready
   $ ->
 
-    initValues 'autoconnect'
     initValues 'url', 'method', 'params'
     initValues 'casino-id', 'casino-string-id', 'casino-site', 'casino-active'
-    initValues 'game-id', 'game-string-id', 'game-name', 'game-description'
+    initValues 'game-id', 'game-string-id', 'game-site', 'game-description'
     initValues 'gamesection-id', 'gamesection-string-id', 'gamesection-name'
+    initValues 'gametype-id', 'gametype-string-id', 'gametype-name'
+    initValues 'autoconnect'
 
     if values.autoconnect
       connect()
@@ -166,6 +166,8 @@ do ->
     $('#btn-logout').on 'click', ->
       ifApi -> api.logout()
 
+
+    # custom method
     $('#btn-send').on 'click', ->
       method = values.method
       unless method
@@ -179,6 +181,7 @@ do ->
 
       ifApi -> api.request method, params
 
+    # casino
     $('#btn-casino-list').on 'click', ->
       ifApi ->
         id          = $('#val-casino-filter-id').val()          || null
@@ -219,6 +222,32 @@ do ->
 
         api.casinoList(filter, order, offset, limit).then (data)-> logTable data.items
 
+    $('#btn-casino-create').on 'click', ->
+      ifApi ->
+        params =
+          id: values['casino-id']
+          string_id: values['casino-string-id']
+          site: values['casino-site']
+          active: values['casino-active']
+
+        api.casinoCreate params
+
+    $('#btn-casino-update').on 'click', ->
+      ifApi ->
+        id = values['casino-id']
+        unless id
+          log 'id is empty'
+          return
+
+        params =
+          string_id: values['casino-string-id']
+          site: values['casino-site']
+          active: values['casino-active']
+
+        api.casinoUpdate id, params
+
+
+    # game
     $('#btn-game-list').on 'click', ->
       ifApi ->
         id          = $('#val-game-filter-id').val()          || null
@@ -257,7 +286,31 @@ do ->
 
         api.gameList(filter, order, offset, limit).then (data)-> logTable data.items
 
+    $('#btn-game-create').on 'click', ->
+      ifApi ->
+        params =
+          string_id: values['game-string-id']
+          name: values['game-name']
+          description: values['game-description']
 
+        api.gameCreate params
+
+    $('#btn-game-update').on 'click', ->
+      ifApi ->
+        id = values['game-id']
+        unless id
+          log 'id is empty'
+          return
+
+        params =
+          string_id: values['game-string-id']
+          name: values['game-name']
+          description: values['game-description']
+
+        api.gameUpdate id, params
+
+
+    # game section
     $('#btn-gamesection-list').on 'click', ->
       ifApi ->
         id          = $('#val-gamesection-filter-id').val()          || null
@@ -295,57 +348,6 @@ do ->
 
         api.gameSectionList(filter, order, offset, limit).then (data)-> logTable data.items
 
-
-    $('#btn-casino-create').on 'click', ->
-      ifApi ->
-        params =
-          id: values['casino-id']
-          string_id: values['casino-string-id']
-          site: values['casino-site']
-          active: values['casino-active']
-
-        api.casinoCreate params
-
-    $('#btn-casino-update').on 'click', ->
-      ifApi ->
-        id = values['casino-id']
-        unless id
-          log 'id is empty'
-          return
-
-        params =
-          string_id: values['casino-string-id']
-          site: values['casino-site']
-          active: values['casino-active']
-
-        api.casinoUpdate id, params
-
-
-    $('#btn-game-create').on 'click', ->
-      ifApi ->
-        params =
-          string_id: values['game-string-id']
-          name: values['game-name']
-          description: values['game-description']
-
-        api.gameCreate params
-
-
-
-    $('#btn-game-update').on 'click', ->
-      ifApi ->
-        id = values['game-id']
-        unless id
-          log 'id is empty'
-          return
-
-        params =
-          string_id: values['game-string-id']
-          name: values['game-name']
-          description: values['game-description']
-
-        api.gameUpdate id, params
-
     $('#btn-gamesection-create').on 'click', ->
       ifApi ->
         params =
@@ -353,8 +355,6 @@ do ->
           name: values['gamesection-name']
 
         api.gameSectionCreate params
-
-
 
     $('#btn-gamesection-update').on 'click', ->
       ifApi ->
@@ -368,4 +368,63 @@ do ->
           name: values['gamesection-name']
 
         api.gameSectionUpdate id, params
+
+    # game section
+    $('#btn-gametype-list').on 'click', ->
+      ifApi ->
+        id          = $('#val-gametype-filter-id').val()          || null
+        string_id   = $('#val-gametype-filter-string-id').val()   || null
+        name        = $('#val-gametype-filter-name').val()        || null
+        offset      = $('#val-gametype-filter-offset').val()      || null
+        limit       = $('#val-gametype-filter-limit').val()       || null
+        order_f0    = $('#val-gametype-order-field0').val()       || null
+        order_f1    = $('#val-gametype-order-field1').val()       || null
+        order_d0    = $('#val-gametype-order-desc0').prop('checked')
+        order_d1    = $('#val-gametype-order-desc1').prop('checked')
+
+        id      = parseInt(id) if id
+        offset  = parseInt(offset) if offset
+        limit   = parseInt(limit) if limit
+
+        id      = null if isNaN id
+        offset  = null if isNaN offset
+        limit   = null if isNaN limit
+
+        if id || string_id || name
+          filter = {id, string_id, name}
+        else
+          filter = null
+
+        if order_f0
+          order = []
+          order.push [order_f0, order_d0]
+
+          if order_f1
+            order.push [order_f1, order_d1]
+
+        else
+          order = null
+
+        api.gameTypeList(filter, order, offset, limit).then (data)-> logTable data.items
+
+    $('#btn-gametype-create').on 'click', ->
+      ifApi ->
+        params =
+          string_id: values['gametype-string-id']
+          name: values['gametype-name']
+
+        api.gameTypeCreate params
+
+    $('#btn-gametype-update').on 'click', ->
+      ifApi ->
+        id = values['gametype-id']
+        unless id
+          log 'id is empty'
+          return
+
+        params =
+          string_id: values['gametype-string-id']
+          name: values['gametype-name']
+
+        api.gameTypeUpdate id, params
 

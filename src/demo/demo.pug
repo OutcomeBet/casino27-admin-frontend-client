@@ -263,6 +263,74 @@ html
               button#btn-gamesection-update.btn Update
 
     fieldset.row
+      legend GameType
+      section
+        fieldset.row
+          legend Filter
+          section
+            .row
+              label.inline(for="val-gametype-filter-id") id
+              input#val-gametype-filter-id
+            .row
+              label.inline(for="val-gametype-filter-string-id") string_id
+              input#val-gametype-filter-string-id
+            .row
+              label.inline(for="val-gametype-filter-name") name
+              input#val-gametype-filter-name
+            .row
+              label.inline(for="val-gametype-filter-offset") offset
+              input#val-gametype-filter-offset
+            .row
+              label.inline(for="val-gametype-filter-limit") limit
+              input#val-gametype-filter-limit
+
+        fieldset.row
+          legend Order
+          section
+            .row
+              label
+                | Field
+                select#val-gametype-order-field0
+                  option(value="") &nbsp;
+                  option(value="id") id
+                  option(value="name") name
+                  option(value="string_id") string_id
+              label
+                | Desc
+                input#val-game-gametype-desc0(type="checkbox")
+            .row
+              label
+                | Field
+                select#val-gametype-order-field1
+                  option(value="") &nbsp;
+                  option(value="id") id
+                  option(value="name") name
+                  option(value="string_id") string_id
+              label
+                | Desc
+                input#val-gametype-order-desc1(type="checkbox")
+
+
+        .row
+          button#btn-gametype-list.btn List
+
+        fieldset.row
+          legend Create/Update
+          section
+            .row
+              label.inline(for="val-gametype-id") id
+              input#val-gametype-id
+            .row
+              label.inline(for="val-gametype-string-id") string_id
+              input#val-gametype-string-id
+            .row
+              label.inline(for="val-gametype-name") name
+              input#val-gametype-name
+            .row
+              button#btn-gametype-create.btn Create
+              button#btn-gametype-update.btn Update
+
+    fieldset.row
       legend Custom Method
       section
         .row: input#val-method

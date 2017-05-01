@@ -68,7 +68,6 @@ api = null;
   initValues = function() {
     var fn, items, j, len, name;
     items = 1 <= arguments.length ? slice.call(arguments, 0) : [];
-    debugger;
     fn = function(name) {
       var el, val;
       if (val = storage != null ? storage.getItem(name) : void 0) {
@@ -135,11 +134,12 @@ api = null;
     }
   };
   return $(function() {
-    initValues('autoconnect');
     initValues('url', 'method', 'params');
     initValues('casino-id', 'casino-string-id', 'casino-site', 'casino-active');
-    initValues('game-id', 'game-string-id', 'game-name', 'game-description');
+    initValues('game-id', 'game-string-id', 'game-site', 'game-description');
     initValues('gamesection-id', 'gamesection-string-id', 'gamesection-name');
+    initValues('gametype-id', 'gametype-string-id', 'gametype-name');
+    initValues('autoconnect');
     if (values.autoconnect) {
       connect();
     }
@@ -257,6 +257,34 @@ api = null;
         });
       });
     });
+    $('#btn-casino-create').on('click', function() {
+      return ifApi(function() {
+        var params;
+        params = {
+          id: values['casino-id'],
+          string_id: values['casino-string-id'],
+          site: values['casino-site'],
+          active: values['casino-active']
+        };
+        return api.casinoCreate(params);
+      });
+    });
+    $('#btn-casino-update').on('click', function() {
+      return ifApi(function() {
+        var id, params;
+        id = values['casino-id'];
+        if (!id) {
+          log('id is empty');
+          return;
+        }
+        params = {
+          string_id: values['casino-string-id'],
+          site: values['casino-site'],
+          active: values['casino-active']
+        };
+        return api.casinoUpdate(id, params);
+      });
+    });
     $('#btn-game-list').on('click', function() {
       return ifApi(function() {
         var description, filter, id, limit, name, offset, order, order_d0, order_d1, order_f0, order_f1, string_id;
@@ -312,6 +340,33 @@ api = null;
         });
       });
     });
+    $('#btn-game-create').on('click', function() {
+      return ifApi(function() {
+        var params;
+        params = {
+          string_id: values['game-string-id'],
+          name: values['game-name'],
+          description: values['game-description']
+        };
+        return api.gameCreate(params);
+      });
+    });
+    $('#btn-game-update').on('click', function() {
+      return ifApi(function() {
+        var id, params;
+        id = values['game-id'];
+        if (!id) {
+          log('id is empty');
+          return;
+        }
+        params = {
+          string_id: values['game-string-id'],
+          name: values['game-name'],
+          description: values['game-description']
+        };
+        return api.gameUpdate(id, params);
+      });
+    });
     $('#btn-gamesection-list').on('click', function() {
       return ifApi(function() {
         var filter, id, limit, name, offset, order, order_d0, order_d1, order_f0, order_f1, string_id;
@@ -365,61 +420,6 @@ api = null;
         });
       });
     });
-    $('#btn-casino-create').on('click', function() {
-      return ifApi(function() {
-        var params;
-        params = {
-          id: values['casino-id'],
-          string_id: values['casino-string-id'],
-          site: values['casino-site'],
-          active: values['casino-active']
-        };
-        return api.casinoCreate(params);
-      });
-    });
-    $('#btn-casino-update').on('click', function() {
-      return ifApi(function() {
-        var id, params;
-        id = values['casino-id'];
-        if (!id) {
-          log('id is empty');
-          return;
-        }
-        params = {
-          string_id: values['casino-string-id'],
-          site: values['casino-site'],
-          active: values['casino-active']
-        };
-        return api.casinoUpdate(id, params);
-      });
-    });
-    $('#btn-game-create').on('click', function() {
-      return ifApi(function() {
-        var params;
-        params = {
-          string_id: values['game-string-id'],
-          name: values['game-name'],
-          description: values['game-description']
-        };
-        return api.gameCreate(params);
-      });
-    });
-    $('#btn-game-update').on('click', function() {
-      return ifApi(function() {
-        var id, params;
-        id = values['game-id'];
-        if (!id) {
-          log('id is empty');
-          return;
-        }
-        params = {
-          string_id: values['game-string-id'],
-          name: values['game-name'],
-          description: values['game-description']
-        };
-        return api.gameUpdate(id, params);
-      });
-    });
     $('#btn-gamesection-create').on('click', function() {
       return ifApi(function() {
         var params;
@@ -430,7 +430,7 @@ api = null;
         return api.gameSectionCreate(params);
       });
     });
-    return $('#btn-gamesection-update').on('click', function() {
+    $('#btn-gamesection-update').on('click', function() {
       return ifApi(function() {
         var id, params;
         id = values['gamesection-id'];
@@ -443,6 +443,84 @@ api = null;
           name: values['gamesection-name']
         };
         return api.gameSectionUpdate(id, params);
+      });
+    });
+    $('#btn-gametype-list').on('click', function() {
+      return ifApi(function() {
+        var filter, id, limit, name, offset, order, order_d0, order_d1, order_f0, order_f1, string_id;
+        id = $('#val-gametype-filter-id').val() || null;
+        string_id = $('#val-gametype-filter-string-id').val() || null;
+        name = $('#val-gametype-filter-name').val() || null;
+        offset = $('#val-gametype-filter-offset').val() || null;
+        limit = $('#val-gametype-filter-limit').val() || null;
+        order_f0 = $('#val-gametype-order-field0').val() || null;
+        order_f1 = $('#val-gametype-order-field1').val() || null;
+        order_d0 = $('#val-gametype-order-desc0').prop('checked');
+        order_d1 = $('#val-gametype-order-desc1').prop('checked');
+        if (id) {
+          id = parseInt(id);
+        }
+        if (offset) {
+          offset = parseInt(offset);
+        }
+        if (limit) {
+          limit = parseInt(limit);
+        }
+        if (isNaN(id)) {
+          id = null;
+        }
+        if (isNaN(offset)) {
+          offset = null;
+        }
+        if (isNaN(limit)) {
+          limit = null;
+        }
+        if (id || string_id || name) {
+          filter = {
+            id: id,
+            string_id: string_id,
+            name: name
+          };
+        } else {
+          filter = null;
+        }
+        if (order_f0) {
+          order = [];
+          order.push([order_f0, order_d0]);
+          if (order_f1) {
+            order.push([order_f1, order_d1]);
+          }
+        } else {
+          order = null;
+        }
+        return api.gameTypeList(filter, order, offset, limit).then(function(data) {
+          return logTable(data.items);
+        });
+      });
+    });
+    $('#btn-gametype-create').on('click', function() {
+      return ifApi(function() {
+        var params;
+        params = {
+          string_id: values['gametype-string-id'],
+          name: values['gametype-name']
+        };
+        return api.gameTypeCreate(params);
+      });
+    });
+    return $('#btn-gametype-update').on('click', function() {
+      return ifApi(function() {
+        var id, params;
+        id = values['gametype-id'];
+        if (!id) {
+          log('id is empty');
+          return;
+        }
+        params = {
+          string_id: values['gametype-string-id'],
+          name: values['gametype-name']
+        };
+        return api.gameTypeUpdate(id, params);
       });
     });
   });
