@@ -103,6 +103,7 @@ do ->
             @errorHandler(err)
           else
             reject(err)
+            return
 
     convertOrder: (order)->
       if order and order instanceof Array
@@ -222,6 +223,26 @@ do ->
 
     gameTypeUpdate: (id, fields)->
       @request 'GameType.Update', {pk: {id}, fields}
+
+
+    ###*
+    # Patches list
+    ###
+    patchList: (filter, order, offset, limit)->
+      if filter || order || offset || limit
+        params = {beta_filter: filter, offset, limit, order: @convertOrder(order)}
+      else
+        params = null
+
+      @request 'Patch.List', params
+      .then @outputPlainItemsData.bind(@)
+
+    # <id, name>
+    patchCreate: (params)->
+      @request 'Patch.Create', item: params
+
+    patchUpdate: (id, fields)->
+      @request 'Patch.Update', {pk: {id}, fields}
 
 
   # register in system

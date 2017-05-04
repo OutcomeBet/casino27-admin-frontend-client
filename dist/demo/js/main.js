@@ -33,7 +33,7 @@ api = null;
     }
   };
   window.logTable = logTable = function(items) {
-    var base, headRow, item, j, k, key, keys, l, len, len1, len2, row, table, td, th;
+    var headRow, item, j, k, key, keys, l, len, len1, len2, ref, row, table, td, th;
     if (items != null ? items.length : void 0) {
       keys = Object.keys(items[0]);
       table = $('<table>');
@@ -47,7 +47,7 @@ api = null;
         row = $('<tr>').appendTo(table);
         for (l = 0, len2 = keys.length; l < len2; l++) {
           key = keys[l];
-          td = $('<td>').text(_.isObject(item[key]) ? JSON.stringify(item[key]) : (typeof (base = item[key]).toString === "function" ? base.toString() : void 0) || item[key]).appendTo(row);
+          td = $('<td>').text(_.isObject(item[key]) ? JSON.stringify(item[key]) : ((ref = item[key]) != null ? typeof ref.toString === "function" ? ref.toString() : void 0 : void 0) || item[key]).appendTo(row);
         }
       }
       return $('#out').append(table);
@@ -136,9 +136,10 @@ api = null;
   return $(function() {
     initValues('url', 'method', 'params');
     initValues('casino-id', 'casino-string-id', 'casino-site', 'casino-active');
-    initValues('game-id', 'game-string-id', 'game-site', 'game-description');
+    initValues('game-id', 'game-string-id', 'game-name', 'game-description', 'game-type-id');
     initValues('gamesection-id', 'gamesection-string-id', 'gamesection-name');
     initValues('gametype-id', 'gametype-string-id', 'gametype-name');
+    initValues('patch-id', 'patch-name', 'patch-casino-id', 'patch-string-id', 'patch-type');
     initValues('autoconnect');
     if (values.autoconnect) {
       connect();
@@ -287,11 +288,12 @@ api = null;
     });
     $('#btn-game-list').on('click', function() {
       return ifApi(function() {
-        var description, filter, id, limit, name, offset, order, order_d0, order_d1, order_f0, order_f1, string_id;
+        var description, filter, id, limit, name, offset, order, order_d0, order_d1, order_f0, order_f1, string_id, type_id;
         id = $('#val-game-filter-id').val() || null;
         string_id = $('#val-game-filter-string-id').val() || null;
         name = $('#val-game-filter-name').val() || null;
         description = $('#val-game-filter-description').val() || null;
+        type_id = $('#val-game-filter-type-id').val() || null;
         offset = $('#val-game-filter-offset').val() || null;
         limit = $('#val-game-filter-limit').val() || null;
         order_f0 = $('#val-game-order-field0').val() || null;
@@ -307,6 +309,9 @@ api = null;
         if (limit) {
           limit = parseInt(limit);
         }
+        if (type_id) {
+          type_id = parseInt(type_id);
+        }
         if (isNaN(id)) {
           id = null;
         }
@@ -316,12 +321,16 @@ api = null;
         if (isNaN(limit)) {
           limit = null;
         }
-        if (id || string_id || name || description) {
+        if (isNaN(type_id)) {
+          type_id = null;
+        }
+        if (id || string_id || name || description || type_id) {
           filter = {
             id: id,
             string_id: string_id,
             name: name,
-            description: description
+            description: description,
+            type_id: type_id
           };
         } else {
           filter = null;
@@ -342,27 +351,43 @@ api = null;
     });
     $('#btn-game-create').on('click', function() {
       return ifApi(function() {
-        var params;
+        var params, type_id;
+        type_id = values['game-type-id'] || null;
+        if (type_id) {
+          type_id = parseInt(type_id);
+        }
+        if (isNaN(type_id)) {
+          type_id = null;
+        }
         params = {
           string_id: values['game-string-id'],
           name: values['game-name'],
-          description: values['game-description']
+          description: values['game-description'],
+          type_id: type_id
         };
         return api.gameCreate(params);
       });
     });
     $('#btn-game-update').on('click', function() {
       return ifApi(function() {
-        var id, params;
+        var id, params, type_id;
         id = values['game-id'];
         if (!id) {
           log('id is empty');
           return;
         }
+        type_id = values['game-type-id'] || null;
+        if (type_id) {
+          type_id = parseInt(type_id);
+        }
+        if (isNaN(type_id)) {
+          type_id = null;
+        }
         params = {
           string_id: values['game-string-id'],
           name: values['game-name'],
-          description: values['game-description']
+          description: values['game-description'],
+          type_id: type_id
         };
         return api.gameUpdate(id, params);
       });
@@ -508,7 +533,7 @@ api = null;
         return api.gameTypeCreate(params);
       });
     });
-    return $('#btn-gametype-update').on('click', function() {
+    $('#btn-gametype-update').on('click', function() {
       return ifApi(function() {
         var id, params;
         id = values['gametype-id'];
@@ -521,6 +546,111 @@ api = null;
           name: values['gametype-name']
         };
         return api.gameTypeUpdate(id, params);
+      });
+    });
+    $('#btn-patch-list').on('click', function() {
+      return ifApi(function() {
+        var casino_id, filter, id, limit, name, offset, order, order_d0, order_d1, order_f0, order_f1, string_id, type;
+        id = $('#val-patch-filter-id').val() || null;
+        name = $('#val-patch-filter-name').val() || null;
+        casino_id = $('#val-patch-filter-casino-id').val() || null;
+        string_id = $('#val-patch-filter-string-id').val() || null;
+        type = $('#val-patch-filter-type').val() || null;
+        offset = $('#val-patch-filter-offset').val() || null;
+        limit = $('#val-patch-filter-limit').val() || null;
+        order_f0 = $('#val-patch-order-field0').val() || null;
+        order_f1 = $('#val-patch-order-field1').val() || null;
+        order_d0 = $('#val-patch-order-desc0').prop('checked');
+        order_d1 = $('#val-patch-order-desc1').prop('checked');
+        if (id) {
+          id = parseInt(id);
+        }
+        if (casino_id) {
+          casino_id = parseInt(casino_id);
+        }
+        if (offset) {
+          offset = parseInt(offset);
+        }
+        if (limit) {
+          limit = parseInt(limit);
+        }
+        if (isNaN(id)) {
+          id = null;
+        }
+        if (isNaN(casino_id)) {
+          casino_id = null;
+        }
+        if (isNaN(offset)) {
+          offset = null;
+        }
+        if (isNaN(limit)) {
+          limit = null;
+        }
+        if (id || name || type || string_id || casino_id) {
+          filter = {
+            id: id,
+            name: name,
+            type: type,
+            casino_id: casino_id,
+            string_id: string_id
+          };
+        } else {
+          filter = null;
+        }
+        if (order_f0) {
+          order = [];
+          order.push([order_f0, order_d0]);
+          if (order_f1) {
+            order.push([order_f1, order_d1]);
+          }
+        } else {
+          order = null;
+        }
+        return api.patchList(filter, order, offset, limit).then(function(data) {
+          return logTable(data.items);
+        });
+      });
+    });
+    $('#btn-patch-create').on('click', function() {
+      return ifApi(function() {
+        var casino_id, params;
+        casino_id = values['patch-casino-id'] || null;
+        if (casino_id) {
+          casino_id = parseInt(casino_id);
+        }
+        if (isNaN(casino_id)) {
+          casino_id = null;
+        }
+        params = {
+          name: values['patch-name'],
+          casino_id: casino_id,
+          string_id: values['patch-string-id'],
+          type: values['patch-type']
+        };
+        return api.patchCreate(params);
+      });
+    });
+    return $('#btn-patch-update').on('click', function() {
+      return ifApi(function() {
+        var casino_id, id, params;
+        id = values['patch-id'];
+        if (!id) {
+          log('id is empty');
+          return;
+        }
+        casino_id = values['patch-casino-id'] || null;
+        if (casino_id) {
+          casino_id = parseInt(casino_id);
+        }
+        if (isNaN(casino_id)) {
+          casino_id = null;
+        }
+        params = {
+          casino_id: casino_id,
+          name: values['patch-name'],
+          type: values['patch-type']
+        };
+        return api.patchUpdate(id, params);
       });
     });
   });

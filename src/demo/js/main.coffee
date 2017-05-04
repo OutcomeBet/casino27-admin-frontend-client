@@ -41,7 +41,7 @@ do ->
         row = $('<tr>').appendTo(table)
         for key in keys
           td = $('<td>').text(
-            if _.isObject(item[key]) then JSON.stringify(item[key]) else item[key].toString?() || item[key]
+            if _.isObject(item[key]) then JSON.stringify(item[key]) else item[key]?.toString?() || item[key]
           ).appendTo(row)
 
       $('#out').append(table)
@@ -126,9 +126,10 @@ do ->
 
     initValues 'url', 'method', 'params'
     initValues 'casino-id', 'casino-string-id', 'casino-site', 'casino-active'
-    initValues 'game-id', 'game-string-id', 'game-site', 'game-description'
+    initValues 'game-id', 'game-string-id', 'game-name', 'game-description', 'game-type-id'
     initValues 'gamesection-id', 'gamesection-string-id', 'gamesection-name'
     initValues 'gametype-id', 'gametype-string-id', 'gametype-name'
+    initValues 'patch-id', 'patch-name', 'patch-casino-id', 'patch-string-id', 'patch-type'
     initValues 'autoconnect'
 
     if values.autoconnect
@@ -254,6 +255,7 @@ do ->
         string_id   = $('#val-game-filter-string-id').val()   || null
         name        = $('#val-game-filter-name').val()        || null
         description = $('#val-game-filter-description').val() || null
+        type_id     = $('#val-game-filter-type-id').val()     || null
         offset      = $('#val-game-filter-offset').val()      || null
         limit       = $('#val-game-filter-limit').val()       || null
         order_f0    = $('#val-game-order-field0').val()       || null
@@ -264,13 +266,15 @@ do ->
         id      = parseInt(id) if id
         offset  = parseInt(offset) if offset
         limit   = parseInt(limit) if limit
+        type_id = parseInt(type_id) if type_id
 
         id      = null if isNaN id
         offset  = null if isNaN offset
         limit   = null if isNaN limit
+        type_id = null if isNaN type_id
 
-        if id || string_id || name || description
-          filter = {id, string_id, name, description}
+        if id || string_id || name || description || type_id
+          filter = {id, string_id, name, description, type_id}
         else
           filter = null
 
@@ -288,10 +292,15 @@ do ->
 
     $('#btn-game-create').on 'click', ->
       ifApi ->
+        type_id = values['game-type-id'] || null
+        type_id = parseInt(type_id) if type_id
+        type_id = null if isNaN type_id
+
         params =
           string_id: values['game-string-id']
           name: values['game-name']
           description: values['game-description']
+          type_id: type_id
 
         api.gameCreate params
 
@@ -302,10 +311,15 @@ do ->
           log 'id is empty'
           return
 
+        type_id = values['game-type-id'] || null
+        type_id = parseInt(type_id) if type_id
+        type_id = null if isNaN type_id
+
         params =
           string_id: values['game-string-id']
           name: values['game-name']
           description: values['game-description']
+          type_id: type_id
 
         api.gameUpdate id, params
 
@@ -369,7 +383,7 @@ do ->
 
         api.gameSectionUpdate id, params
 
-    # game section
+    # game type
     $('#btn-gametype-list').on 'click', ->
       ifApi ->
         id          = $('#val-gametype-filter-id').val()          || null
@@ -427,4 +441,78 @@ do ->
           name: values['gametype-name']
 
         api.gameTypeUpdate id, params
+
+    # patch
+    $('#btn-patch-list').on 'click', ->
+      ifApi ->
+        id          = $('#val-patch-filter-id').val()          || null
+        name        = $('#val-patch-filter-name').val()        || null
+        casino_id   = $('#val-patch-filter-casino-id').val()   || null
+        string_id   = $('#val-patch-filter-string-id').val()   || null
+        type        = $('#val-patch-filter-type').val()        || null
+        offset      = $('#val-patch-filter-offset').val()      || null
+        limit       = $('#val-patch-filter-limit').val()       || null
+        order_f0    = $('#val-patch-order-field0').val()       || null
+        order_f1    = $('#val-patch-order-field1').val()       || null
+        order_d0    = $('#val-patch-order-desc0').prop('checked')
+        order_d1    = $('#val-patch-order-desc1').prop('checked')
+
+        id      = parseInt(id) if id
+        casino_id = parseInt(casino_id) if casino_id
+        offset  = parseInt(offset) if offset
+        limit   = parseInt(limit) if limit
+
+        id      = null if isNaN id
+        casino_id = null if isNaN casino_id
+        offset  = null if isNaN offset
+        limit   = null if isNaN limit
+
+        if id || name || type || string_id || casino_id
+          filter = {id, name, type, casino_id, string_id}
+        else
+          filter = null
+
+        if order_f0
+          order = []
+          order.push [order_f0, order_d0]
+
+          if order_f1
+            order.push [order_f1, order_d1]
+
+        else
+          order = null
+
+        api.patchList(filter, order, offset, limit).then (data)-> logTable data.items
+
+    $('#btn-patch-create').on 'click', ->
+      ifApi ->
+        casino_id = values['patch-casino-id'] || null
+        casino_id = parseInt(casino_id) if casino_id
+        casino_id = null if isNaN casino_id
+
+        params =
+          name: values['patch-name']
+          casino_id: casino_id
+          string_id: values['patch-string-id']
+          type: values['patch-type']
+
+        api.patchCreate params
+
+    $('#btn-patch-update').on 'click', ->
+      ifApi ->
+        id = values['patch-id']
+        unless id
+          log 'id is empty'
+          return
+
+        casino_id = values['patch-casino-id'] || null
+        casino_id = parseInt(casino_id) if casino_id
+        casino_id = null if isNaN casino_id
+
+        params =
+          casino_id: casino_id
+          name: values['patch-name']
+          type: values['patch-type']
+
+        api.patchUpdate id, params
 

@@ -54,7 +54,9 @@ label.inline {
   vertical-align: middle; }
 
 fieldset {
-  padding: 0; }
+  padding: 0 0 0 3px;
+  margin: 0 0 5px 0;
+  border: 1px solid black; }
   fieldset > legend {
     font-weight: bold;
     padding: 3px;
@@ -66,7 +68,14 @@ fieldset {
   fieldset > section {
     padding: 5px;
     display: none; }
-  fieldset.open > legend:before {
-    content: '▼'; }
-  fieldset.open > section {
-    display: block; }
+    fieldset > section .row {
+      padding: 0;
+      margin-bottom: 5px; }
+    fieldset > section fieldset {
+      border: 1px solid #ccc; }
+  fieldset.open {
+    padding: 3px; }
+    fieldset.open > legend:before {
+      content: '▼'; }
+    fieldset.open > section {
+      display: block; }

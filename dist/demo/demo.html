@@ -29,10 +29,10 @@
         <input id="val-autoconnect" type="checkbox">&nbsp;Auto connect
       </label>
     </div>
-    <fieldset class="row">
+    <fieldset>
       <legend>Casino</legend>
       <section>
-        <fieldset class="row">
+        <fieldset>
           <legend>Filter</legend>
           <section>
             <div class="row">
@@ -69,7 +69,7 @@
             </div>
           </section>
         </fieldset>
-        <fieldset class="row">
+        <fieldset>
           <legend>Order</legend>
           <section>
             <div class="row">
@@ -107,7 +107,7 @@
         <div class="row">
           <button class="btn" id="btn-casino-list">List</button>
         </div>
-        <fieldset class="row">
+        <fieldset>
           <legend>Create/Update</legend>
           <section>
             <div class="row">
@@ -134,10 +134,10 @@
         </fieldset>
       </section>
     </fieldset>
-    <fieldset class="row">
+    <fieldset>
       <legend>Game</legend>
       <section>
-        <fieldset class="row">
+        <fieldset>
           <legend>Filter</legend>
           <section>
             <div class="row">
@@ -157,6 +157,10 @@
               <input id="val-game-filter-description">
             </div>
             <div class="row">
+              <label class="inline" for="val-game-filter-type-id">type_id</label>
+              <input id="val-game-filter-type-id">
+            </div>
+            <div class="row">
               <label class="inline" for="val-game-filter-offset">offset</label>
               <input id="val-game-filter-offset">
             </div>
@@ -166,7 +170,7 @@
             </div>
           </section>
         </fieldset>
-        <fieldset class="row">
+        <fieldset>
           <legend>Order</legend>
           <section>
             <div class="row">
@@ -176,6 +180,7 @@
                   <option value="id">id</option>
                   <option value="name">name</option>
                   <option value="string_id">string_id</option>
+                  <option value="type_id">type_id</option>
                   <option value="description">description</option>
                 </select>
               </label>
@@ -190,6 +195,7 @@
                   <option value="id">id</option>
                   <option value="name">name</option>
                   <option value="string_id">string_id</option>
+                  <option value="type_id">type_id</option>
                   <option value="description">description</option>
                 </select>
               </label>
@@ -202,7 +208,7 @@
         <div class="row">
           <button class="btn" id="btn-game-list">List</button>
         </div>
-        <fieldset class="row">
+        <fieldset>
           <legend>Create/Update</legend>
           <section>
             <div class="row">
@@ -222,6 +228,10 @@
               <input id="val-game-description">
             </div>
             <div class="row">
+              <label class="inline" for="val-game-type-id">type_id</label>
+              <input id="val-game-type-id">
+            </div>
+            <div class="row">
               <button class="btn" id="btn-game-create">Create</button>
               <button class="btn" id="btn-game-update">Update</button>
             </div>
@@ -229,10 +239,10 @@
         </fieldset>
       </section>
     </fieldset>
-    <fieldset class="row">
+    <fieldset>
       <legend>GameSection</legend>
       <section>
-        <fieldset class="row">
+        <fieldset>
           <legend>Filter</legend>
           <section>
             <div class="row">
@@ -257,7 +267,7 @@
             </div>
           </section>
         </fieldset>
-        <fieldset class="row">
+        <fieldset>
           <legend>Order</legend>
           <section>
             <div class="row">
@@ -291,7 +301,7 @@
         <div class="row">
           <button class="btn" id="btn-gamesection-list">List</button>
         </div>
-        <fieldset class="row">
+        <fieldset>
           <legend>Create/Update</legend>
           <section>
             <div class="row">
@@ -314,10 +324,10 @@
         </fieldset>
       </section>
     </fieldset>
-    <fieldset class="row">
+    <fieldset>
       <legend>GameType</legend>
       <section>
-        <fieldset class="row">
+        <fieldset>
           <legend>Filter</legend>
           <section>
             <div class="row">
@@ -342,7 +352,7 @@
             </div>
           </section>
         </fieldset>
-        <fieldset class="row">
+        <fieldset>
           <legend>Order</legend>
           <section>
             <div class="row">
@@ -376,7 +386,7 @@
         <div class="row">
           <button class="btn" id="btn-gametype-list">List</button>
         </div>
-        <fieldset class="row">
+        <fieldset>
           <legend>Create/Update</legend>
           <section>
             <div class="row">
@@ -399,7 +409,117 @@
         </fieldset>
       </section>
     </fieldset>
-    <fieldset class="row">
+    <fieldset>
+      <legend>Patch</legend>
+      <section>
+        <fieldset>
+          <legend>Filter</legend>
+          <section>
+            <div class="row">
+              <label class="inline" for="val-patch-filter-id">id</label>
+              <input id="val-patch-filter-id">
+            </div>
+            <div class="row">
+              <label class="inline" for="val-patch-filter-casino-id">casino_id</label>
+              <input id="val-patch-filter-casino-id">
+            </div>
+            <div class="row">
+              <label class="inline" for="val-patch-filter-string-id">string_id</label>
+              <input id="val-patch-filter-string-id">
+            </div>
+            <div class="row">
+              <label class="inline" for="val-patch-filter-name">type</label>
+              <input id="val-patch-filter-type">
+            </div>
+            <div class="row">
+              <label class="inline" for="val-patch-filter-name">name</label>
+              <input id="val-patch-filter-name">
+            </div>
+            <div class="row">
+              <label class="inline" for="val-patch-filter-offset">offset</label>
+              <input id="val-patch-filter-offset">
+            </div>
+            <div class="row">
+              <label class="inline" for="val-patch-filter-limit">limit</label>
+              <input id="val-patch-filter-limit">
+            </div>
+          </section>
+        </fieldset>
+        <fieldset>
+          <legend>Order</legend>
+          <section>
+            <div class="row">
+              <label>Field
+                <select id="val-patch-order-field0">
+                  <option value="">&nbsp;</option>
+                  <option value="id">id</option>
+                  <option value="casino_id">casino_id</option>
+                  <option value="string_id">string_id</option>
+                  <option value="type">type</option>
+                  <option value="name">name</option>
+                </select>
+              </label>
+              <label>Desc
+                <input id="val-game-patch-desc0" type="checkbox">
+              </label>
+            </div>
+            <div class="row">
+              <label>Field
+                <select id="val-patch-order-field1">
+                  <option value="">&nbsp;</option>
+                  <option value="id">id</option>
+                  <option value="casino_id">casino_id</option>
+                  <option value="string_id">string_id</option>
+                  <option value="type">type</option>
+                  <option value="name">name</option>
+                </select>
+              </label>
+              <label>Desc
+                <input id="val-patch-order-desc1" type="checkbox">
+              </label>
+            </div>
+          </section>
+        </fieldset>
+        <div class="row">
+          <button class="btn" id="btn-patch-list">List</button>
+        </div>
+        <fieldset>
+          <legend>Create/Update</legend>
+          <section>
+            <div class="row">
+              <label class="inline" for="val-patch-id">id</label>
+              <input id="val-patch-id">
+            </div>
+            <div class="row">
+              <label class="inline" for="val-patch-casino-id">casino_id</label>
+              <input id="val-patch-casino-id">
+            </div>
+            <div class="row">
+              <label class="inline" for="val-patch-string-id">string_id</label>
+              <input id="val-patch-string-id">
+            </div>
+            <div class="row">
+              <label class="inline" for="val-patch-type">type</label>
+              <select id="val-patch-type">
+                <option value="base">base</option>
+                <option value="currency">currency</option>
+                <option value="alternative">alternative</option>
+                <option value="mix">mix</option>
+              </select>
+            </div>
+            <div class="row">
+              <label class="inline" for="val-patch-name">name</label>
+              <input id="val-patch-name">
+            </div>
+            <div class="row">
+              <button class="btn" id="btn-patch-create">Create</button>
+              <button class="btn" id="btn-patch-update">Update</button>
+            </div>
+          </section>
+        </fieldset>
+      </section>
+    </fieldset>
+    <fieldset>
       <legend>Custom Method</legend>
       <section>
         <div class="row">

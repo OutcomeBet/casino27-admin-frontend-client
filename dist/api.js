@@ -124,7 +124,7 @@ var hasProp = {}.hasOwnProperty;
             if (_this.errorHandler) {
               return _this.errorHandler(err);
             } else {
-              return reject(err);
+              reject(err);
             }
           });
         };
@@ -310,6 +310,41 @@ var hasProp = {}.hasOwnProperty;
 
     AdminApiClient.prototype.gameTypeUpdate = function(id, fields) {
       return this.request('GameType.Update', {
+        pk: {
+          id: id
+        },
+        fields: fields
+      });
+    };
+
+
+    /**
+     * Patches list
+     */
+
+    AdminApiClient.prototype.patchList = function(filter, order, offset, limit) {
+      var params;
+      if (filter || order || offset || limit) {
+        params = {
+          beta_filter: filter,
+          offset: offset,
+          limit: limit,
+          order: this.convertOrder(order)
+        };
+      } else {
+        params = null;
+      }
+      return this.request('Patch.List', params).then(this.outputPlainItemsData.bind(this));
+    };
+
+    AdminApiClient.prototype.patchCreate = function(params) {
+      return this.request('Patch.Create', {
+        item: params
+      });
+    };
+
+    AdminApiClient.prototype.patchUpdate = function(id, fields) {
+      return this.request('Patch.Update', {
         pk: {
           id: id
         },

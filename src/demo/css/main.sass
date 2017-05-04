@@ -71,7 +71,9 @@ label.inline
   vertical-align: middle
 
 fieldset
-  padding: 0
+  padding: 0 0 0 3px
+  margin: 0 0 5px 0
+  border: 1px solid black
 
   > legend
     font-weight: bold
@@ -87,7 +89,16 @@ fieldset
     padding: 5px
     display: none
 
+    .row
+      padding: 0
+      margin-bottom: 5px
+
+    fieldset
+      border: 1px solid #ccc
+
   &.open
+    padding: 3px
+
     > legend
       &:before
         content: '▼'
